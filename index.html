@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Someone Special 💖</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  .card {
+    background: white;
+    padding: 45px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    max-width: 90%;
+  }
+
+  h1 {
+    font-size: 2.3rem;
+    color: #ff4d6d;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+
+  input {
+    width: 90%;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 2px solid #ff4d6d;
+    outline: none;
+  }
+
+  .buttons {
+    position: relative;
+    height: 150px;
+  }
+
+  button {
+    padding: 14px 32px;
+    font-size: 1.2rem;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    transition: all 0.2s ease;
+  }
+
+  #yes {
+    background: #ff4d6d;
+    color: white;
+    left: 25%;
+  }
+
+  #no {
+    background: #ddd;
+    color: #333;
+    left: 55%;
+  }
+
+  .heart {
+    position: fixed;
+    pointer-events: none;
+    animation: float 1s forwards;
+  }
+
+  @keyframes float {
+    to {
+      transform: translateY(-40px);
+      opacity: 0;
+    }
+  }
+
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <h1 id="title">Will you be my Valentine? 💖</h1>
+  <input id="nameInput" placeholder="Their name 💌">
+  <input id="customText" placeholder="Your love message (e.g. I love you forever ❤️)">
+
+  <div class="buttons">
+    <button id="yes">Yes 💘</button>
+    <button id="no">No 🙅</button>
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7bfae33c5a.mp3">
+</audio>
+
+<script>
+  const yesBtn = document.getElementById("yes");
+  const noBtn = document.getElementById("no");
+  const card = document.getElementById("card");
+  const nameInput = document.getElementById("nameInput");
+  const customText = document.getElementById("customText");
+  const title = document.getElementById("title");
+  const loveText = document.getElementById("loveText");
+  const music = document.getElementById("music");
+
+  let escapes = 0;
+
+  nameInput.addEventListener("input", () => {
+    const name = nameInput.value.trim();
+    title.textContent = name
+      ? `Will you be my Valentine, ${name}? 💕`
+      : "Will you be my Valentine? 💖";
+  });
+
+  customText.addEventListener("input", () => {
+    loveText.textContent = customText.value || "I love you ❤️";
+  });
+
+  noBtn.addEventListener("mouseenter", () => {
+    escapes++;
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 120);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+    noBtn.style.transform = `scale(${Math.max(0.5, 1 - escapes * 0.1)})`;
+
+    if (escapes > 5) {
+      noBtn.textContent = "I surrender 😭";
+      noBtn.disabled = true;
+      noBtn.style.opacity = 0.5;
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+    const name = nameInput.value || "My Love";
+    const message = customText.value || "I love you ❤️";
+
+    card.innerHTML = `
+      <h1>YES!!! 💖💖💖</h1>
+      <p>${name}, ${message}</p>
+      <p>Happy Valentine’s Day 💘</p>
+    `;
+    card.style.background = "linear-gradient(135deg, #ff4d6d, #ff9a9e)";
+    card.style.color = "white";
+    music.play();
+    confetti();
+  });
+
+  function confetti() {
+    for (let i = 0; i < 200; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.backgroundColor = `hsl(${Math.random() * 360},100%,60%)`;
+      c.style.animationDuration = Math.random() * 2 + 2 + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 4000);
+    }
+  }
+
+  document.addEventListener("mousemove", e => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💗";
+    heart.style.left = e.clientX + "px";
+    heart.style.top = e.clientY + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1000);
+  });
+</script>
+
+</body>
+</html>
